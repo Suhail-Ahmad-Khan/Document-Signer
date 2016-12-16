@@ -1,0 +1,5 @@
+package org.bridgelabz.docsigner.model;
+
+public class User {
+
+}

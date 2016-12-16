@@ -1,0 +1,28 @@
+package org.bridgelabz.docsigner.service.impl;
+
+import org.bridgelabz.docsigner.model.Document;
+import org.bridgelabz.docsigner.service.DocumentService;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
+
+@Repository
+@Transactional
+public class DocumentServiceImpl implements DocumentService {
+
+	@Autowired
+	private SessionFactory sessionFactory;
+
+	@Transactional
+	public void addDocument(Document document) {
+		Session session = sessionFactory.getCurrentSession();
+		try {
+			session.save(document);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+}
