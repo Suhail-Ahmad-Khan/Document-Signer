@@ -10,9 +10,8 @@
 	style="text-align: center; background-size: cover">
 	<center>
 		<h1>Successful login</h1>
-		<a href="addDocuments">Add Documents</a> 
-		<a href="addSignature">Add Signature</a>
-		<a href="listDocuments">List My Documents</a>
+		<a href="addDocuments">Add Documents</a> <a href="addSignature">Add
+			Signature</a> <a href="documentList">List My Documents</a>
 	</center>
 </body>
 </html>

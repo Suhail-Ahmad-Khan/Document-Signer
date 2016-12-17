@@ -1,9 +1,13 @@
 package org.bridgelabz.docsigner.service.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.bridgelabz.docsigner.model.Document;
 import org.bridgelabz.docsigner.service.DocumentService;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,24 +28,27 @@ public class DocumentServiceImpl implements DocumentService {
 		}
 	}
 
-}
+	public List<Document> listDocuments(int userId) {
+		Session session = sessionFactory.getCurrentSession();
+		Query<Document> query = session.createQuery("from Document where id=:userId");
+		query.setParameter("userId", userId);
+		List<Document> documentList = query.getResultList();
 
-/*
- * Session session = sessionFactory.getCurrentSession();
- * 
- * System.out.println("Name:" + document.getName()); System.out.println("Desc:"
- * + document.getDescription()); System.out.println("File:" + file.getName());
- * System.out.println("ContentType:" + file.getContentType());
- * 
- * try { byte[] fileBytes = file.getBytes(); Blob blob =
- * Hibernate.getLobCreator(session).createBlob(fileBytes);
- * 
- * document.setFilename(file.getOriginalFilename()); document.setContent(blob);
- * document.setContentType(file.getContentType()); session.save(document); }
- * catch (IOException e) { e.printStackTrace(); }
- * 
- * try { documentService.addDocument(document); } catch (Exception e) {
- * e.printStackTrace(); }
- * 
- * return "addDocuments";
- */
+		List<Document> myDocuments = new ArrayList<Document>();
+		for (Document document : documentList) {
+			if (document.getUserId() == userId) {
+				myDocuments.add(document);
+			}
+		}
+		return myDocuments;
+	}
+
+	public List<Document> listDocumentDetails(int id) {
+		Session session = sessionFactory.getCurrentSession();
+		Query<Document> query = session.createQuery("from Document where id=:id");
+		query.setParameter("id", id);
+		List<Document> documentDetails = query.getResultList();
+		return documentDetails;
+	}
+
+}

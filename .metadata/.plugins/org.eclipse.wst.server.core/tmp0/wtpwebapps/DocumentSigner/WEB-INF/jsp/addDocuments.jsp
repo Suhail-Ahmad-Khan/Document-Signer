@@ -13,32 +13,37 @@
 	<form:form action="addDocuments" commandName="document" method="post"
 		style="margin-left:35%" enctype="multipart/form-data">
 		<table>
+
 			<tr>
-				<td><form:label path="name">Name</form:label></td>
-				<td><form:input path="name" /></td>
+				<td><label>Enter Name:</label></td>
+				<td><form:input type="text" path="name" /></td>
 			</tr>
 			<tr>
-				<td><form:label path="filename">Filename</form:label></td>
-				<td><form:input path="filename" /></td>
+				<td><label>Enter User ID:</label></td>
+				<td><form:input type="Number" path="userId" /></td>
 			</tr>
 			<tr>
-				<td><form:label path="description">Description</form:label></td>
-				<td><form:textarea path="description" /></td>
+				<td><label>Enter Filename:</label></td>
+				<td><form:input type="text" path="filename" /></td>
 			</tr>
 			<tr>
-				<td><form:label path="contentType">Content Type</form:label></td>
-				<td><form:input path="contentType" /></td>
+				<td><label>Enter Description:</label></td>
+				<td><form:input type="textarea" path="description" /></td>
 			</tr>
 			<tr>
-				<td><form:label path="createdDate">Date Created</form:label></td>
+				<td><label>Enter Content Type:</label></td>
+				<td><form:input type="text" path="contentType" /></td>
+			</tr>
+			<tr>
+				<td><label>Enter Date Created:</label></td>
 				<td><form:input path="createdDate" /></td>
 			</tr>
 			<tr>
-				<td><form:label path="content">Document</form:label></td>
+				<td><label> Enter Document</label></td>
 				<td><input type="file" name="file" id="file"></input></td>
 			</tr>
 			<tr>
-				<td colspan="2"><input type="submit" value="Add Document" /></td>
+				<td><input type="submit" value="Add Document" /></td>
 			</tr>
 		</table>
 	</form:form>

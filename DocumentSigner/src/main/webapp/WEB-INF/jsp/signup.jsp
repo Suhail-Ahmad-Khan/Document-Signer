@@ -35,7 +35,7 @@
 					<td><form:input type="text" path="country" /></td>
 				</tr>
 				<tr>
-					<td><label>Enter Mobile No.:</label></td>
+					<td><label>Enter Mobile No:</label></td>
 					<td><form:input type="text" path="mobile" /></td>
 				</tr>
 				<tr>

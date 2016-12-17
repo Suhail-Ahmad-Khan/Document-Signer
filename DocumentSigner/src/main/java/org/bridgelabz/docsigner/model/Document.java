@@ -17,7 +17,10 @@ public class Document {
 	@Id
 	@GeneratedValue
 	@Column(name = "id")
-	private Integer id;
+	private int id;
+
+	@Column(name = "userId")
+	private int userId;
 
 	@Column(name = "name")
 	private String name;
@@ -44,6 +47,14 @@ public class Document {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+
+	public int getUserId() {
+		return userId;
+	}
+
+	public void setUserId(int userId) {
+		this.userId = userId;
 	}
 
 	public String getName() {
