@@ -1,10 +1,14 @@
 package org.bridgelabz.docsigner.service.impl;
 
+import java.io.InputStream;
+import java.sql.Blob;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.bridgelabz.docsigner.model.Document;
 import org.bridgelabz.docsigner.service.DocumentService;
+import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
@@ -19,11 +23,17 @@ public class DocumentServiceImpl implements DocumentService {
 	@Autowired
 	private SessionFactory sessionFactory;
 
-	public void addDocument(Document document) {
+	public void addDocument(Document document, InputStream inputStream) {
 		Session session = sessionFactory.getCurrentSession();
 		try {
+			document.setCreatedDate( new Date() );
+			Blob blob = Hibernate.getLobCreator( session ).createBlob( inputStream, inputStream.available() );
+			document.setContent(blob);
 			session.save(document);
-		} catch (Exception e) {
+			System.out.println("======== ADD Document SAVE========= end===");
+		}
+		catch (Exception e) {
+			System.out.println("======== ADD Document SAVE========= error===");
 			e.printStackTrace();
 		}
 	}

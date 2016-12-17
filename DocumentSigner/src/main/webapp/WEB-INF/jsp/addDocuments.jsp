@@ -13,30 +13,13 @@
 	<form:form action="addDocuments" commandName="document" method="post"
 		style="margin-left:35%" enctype="multipart/form-data">
 		<table>
-
-			<tr>
-				<td><label>Enter Name:</label></td>
-				<td><form:input type="text" path="name" /></td>
-			</tr>
 			<tr>
 				<td><label>Enter User ID:</label></td>
 				<td><form:input type="Number" path="userId" /></td>
 			</tr>
 			<tr>
-				<td><label>Enter Filename:</label></td>
-				<td><form:input type="text" path="filename" /></td>
-			</tr>
-			<tr>
 				<td><label>Enter Description:</label></td>
 				<td><form:input type="textarea" path="description" /></td>
-			</tr>
-			<tr>
-				<td><label>Enter Content Type:</label></td>
-				<td><form:input type="text" path="contentType" /></td>
-			</tr>
-			<tr>
-				<td><label>Enter Date Created:</label></td>
-				<td><form:input path="createdDate" /></td>
 			</tr>
 			<tr>
 				<td><label> Enter Document</label></td>
