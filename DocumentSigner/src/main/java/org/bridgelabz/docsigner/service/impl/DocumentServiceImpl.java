@@ -30,7 +30,7 @@ public class DocumentServiceImpl implements DocumentService {
 
 	public List<Document> listDocuments(int userId) {
 		Session session = sessionFactory.getCurrentSession();
-		Query<Document> query = session.createQuery("from Document where id=:userId");
+		Query<Document> query = session.createQuery("from Document");
 		query.setParameter("userId", userId);
 		List<Document> documentList = query.getResultList();
 
