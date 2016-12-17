@@ -3,6 +3,9 @@ package org.bridgelabz.docsigner.controller;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.bridgelabz.docsigner.json.ErrorResponse;
+import org.bridgelabz.docsigner.json.Response;
+import org.bridgelabz.docsigner.json.SuccessResponse;
 import org.bridgelabz.docsigner.model.User;
 import org.bridgelabz.docsigner.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 public class LoginController {
@@ -18,27 +22,39 @@ public class LoginController {
 	UserService userService;
 
 	@RequestMapping("/loginPage")
-	public String init() {
+	public String init(HttpServletRequest request) {
+		HttpSession httpSession = request.getSession();
+		User user = (User) httpSession.getAttribute("user");
+		if( user !=null)
+		{
+			return "success";
+		}
 		return "login";
 	}
 
-	@RequestMapping(value = "/loginPage", method = RequestMethod.POST)
-	public String login(@RequestParam("email") String email, @RequestParam("password") String password,
+	@RequestMapping(value = "/login", method = RequestMethod.POST)
+	public @ResponseBody Response login(@RequestParam("email") String email, @RequestParam("password") String password,
 			HttpServletRequest request) {
 		User user = userService.authUser(email, password);
-		// authenticate session
-
 		if (user == null) {
-			return "login";
-		} else {
+			ErrorResponse er = new ErrorResponse();
+			er.setStatus(-1);
+			er.setDisplayMessage("Invalid credentil");
+			er.setErrorMessage("user not found");
+			return er;
+			//return "login";
+		} 
+		else {
 			HttpSession sesion = request.getSession();
 			sesion.invalidate(); // invalidate existing session
 			sesion = request.getSession();
 			sesion.setAttribute("user", user);
-			sesion.setMaxInactiveInterval(15);
-			return "success";
+			SuccessResponse er = new SuccessResponse();
+			er.setStatus(1);
+			er.setMessage("successfully logged");
+			return er;
+			//return "success";
 		}
-
 	}
 
 	@RequestMapping(value = "/signout", method = RequestMethod.GET)

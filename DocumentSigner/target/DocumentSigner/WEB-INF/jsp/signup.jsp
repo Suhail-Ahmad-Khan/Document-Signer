@@ -8,7 +8,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Signup Page</title>
 </head>
-<body style="text-align: center">
+<body background="${pageContext.request.contextPath}/images/green.jpg"
+	style="text-align: center; background-size: cover">
 	<h1>Signup Page</h1>
 	<center>
 		<form:form action="signupPage" commandName="user" method="post">
@@ -34,7 +35,7 @@
 					<td><form:input type="text" path="country" /></td>
 				</tr>
 				<tr>
-					<td><label>Enter Mobile No.:</label></td>
+					<td><label>Enter Mobile No:</label></td>
 					<td><form:input type="text" path="mobile" /></td>
 				</tr>
 				<tr>

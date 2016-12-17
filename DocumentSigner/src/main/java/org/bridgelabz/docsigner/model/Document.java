@@ -1,5 +1,6 @@
 package org.bridgelabz.docsigner.model;
 
+import java.io.Serializable;
 import java.sql.Blob;
 import java.util.Date;
 
@@ -12,7 +13,9 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "documents")
-public class Document {
+public class Document implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue

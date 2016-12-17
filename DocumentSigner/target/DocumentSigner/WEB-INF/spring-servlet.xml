@@ -61,16 +61,21 @@
 			</props>
 		</property>
 	</bean>
-	<!-- <bean id="userDao" class="org.bridgelabz.iplwebapp.dao.impl.UserDaoImpl"></bean> -->
-	<bean id="userService" class="org.bridgelabz.docmanager.service.impl.UserServiceImpl"></bean>
-	<!-- <bean id="teamDao" class="org.bridgelabz.iplwebapp.dao.impl.TeamDaoImpl"></bean> 
-		<bean id="teamService" class="org.bridgelabz.iplwebapp.service.impl.TeamServiceImpl"></bean> 
-		<bean id="playerDao" class="org.bridgelabz.iplwebapp.dao.impl.PlayerDaoImpl"></bean> 
-		<bean id="playerService" class="org.bridgelabz.iplwebapp.service.impl.PlayerServiceImpl"></bean> -->
+
+	<bean id="userService" class="org.bridgelabz.docsigner.service.impl.UserServiceImpl"></bean>
+	<bean id="documentService"
+		class="org.bridgelabz.docsigner.service.impl.DocumentServiceImpl"></bean>
 
 	<bean id="transactionManager"
 		class="org.springframework.orm.hibernate5.HibernateTransactionManager">
 		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+
+		<!-- one of the properties available; the maximum file size in bytes -->
+		<property name="maxUploadSize" value="10000000" />
 	</bean>
 
 </beans>

@@ -2,7 +2,6 @@ package org.bridgelabz.docsigner.service.impl;
 
 import java.io.InputStream;
 import java.sql.Blob;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -11,6 +10,8 @@ import org.bridgelabz.docsigner.service.DocumentService;
 import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Restrictions;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -40,16 +41,14 @@ public class DocumentServiceImpl implements DocumentService {
 
 	public List<Document> listDocuments(int userId) {
 		Session session = sessionFactory.getCurrentSession();
-		Query<Document> query = session.createQuery("from Document");
-		query.setParameter("userId", userId);
-		List<Document> documentList = query.getResultList();
-
-		List<Document> myDocuments = new ArrayList<Document>();
-		for (Document document : documentList) {
-			if (document.getUserId() == userId) {
-				myDocuments.add(document);
-			}
-		}
+		@SuppressWarnings("deprecation")
+		List<Document> myDocuments = (List<Document>) session.createCriteria(Document.class)
+		.setProjection( Projections.projectionList()
+						.add(Projections.property("id"))
+						.add(Projections.property("filename"))
+					 )
+		.add(Restrictions.eq("userId", userId))
+		.list();
 		return myDocuments;
 	}
 
@@ -59,6 +58,16 @@ public class DocumentServiceImpl implements DocumentService {
 		query.setParameter("id", id);
 		List<Document> documentDetails = query.getResultList();
 		return documentDetails;
+	}
+
+	@Override
+	public Document getDocumentContent(Integer id) {
+		Session session = sessionFactory.getCurrentSession();
+		@SuppressWarnings("deprecation")
+		Document myDocument = (Document) session.createCriteria(Document.class)
+						.add(Restrictions.idEq(id))
+						.uniqueResult();		
+		return myDocument;
 	}
 
 }

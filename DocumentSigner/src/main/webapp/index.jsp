@@ -8,8 +8,11 @@
 </head>
 <body background="${pageContext.request.contextPath}/images/green.jpg"
 	style="text-align: center; background-size: cover">
-	<h1>Welcome to Document Signer</h1>
+	<%
+		response.sendRedirect("loginPage");
+	%>
+	<!-- <h1>Welcome to Document Signer</h1>
 	<a href="loginPage">Login</a>&nbsp;&nbsp;
-	<a href="signupPage">Sign Up</a>
+	<a href="signupPage">Sign Up</a> -->
 </body>
 </html>

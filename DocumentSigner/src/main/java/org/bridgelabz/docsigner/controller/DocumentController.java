@@ -1,11 +1,19 @@
 package org.bridgelabz.docsigner.controller;
 
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import org.bridgelabz.docsigner.json.ErrorResponse;
+import org.bridgelabz.docsigner.json.Response;
+import org.bridgelabz.docsigner.json.SuccessResponse;
 import org.bridgelabz.docsigner.model.Document;
+import org.bridgelabz.docsigner.model.User;
 import org.bridgelabz.docsigner.service.DocumentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,6 +23,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -27,15 +36,20 @@ public class DocumentController {
 	@RequestMapping(value = "/addDocuments", method = RequestMethod.GET)
 	public String getData(Model model) {
 		Document document = new Document();
-
 		model.addAttribute("document", document);
 		return "addDocuments";
 	}
 
+	@RequestMapping(value = "/document", method = RequestMethod.GET)
+	public String documentPage() {
+		return "success";
+	}
+	
 	@RequestMapping(value = "/addDocuments", method = RequestMethod.POST)
-	public String addDocument(@ModelAttribute("document") Document document, BindingResult result, MultipartFile file) {
-		System.out.println(file.getOriginalFilename());
-		System.out.println(file.getName());
+	public @ResponseBody Response  addDocument(@ModelAttribute("document") Document document, BindingResult result, MultipartFile file, HttpServletRequest request) {
+		HttpSession httpSession = request.getSession();
+		User user = (User) httpSession.getAttribute("user");
+		document.setUserId( user.getId() );
 		InputStream io = null;
 		try {
 			document.setFilename(file.getOriginalFilename());
@@ -45,6 +59,10 @@ public class DocumentController {
 
 			documentService.addDocument(document, io);
 			io.close();
+			SuccessResponse sr = new SuccessResponse();
+			sr.setMessage("Document added successfully!");
+			sr.setStatus(1);
+			return sr;
 			/*
 			 * FileOutputStream fos = new
 			 * FileOutputStream("/home/bridgeit/"+file.getOriginalFilename());
@@ -53,25 +71,65 @@ public class DocumentController {
 			 * io.close();
 			 */
 
-		} catch (IOException e) {
-			e.printStackTrace();
 		}
-		return "success";
+		catch (IOException e){
+			e.printStackTrace();
+			ErrorResponse er = new ErrorResponse();
+			er.setErrorMessage("Error while saving the file" + e.getMessage() );
+			er.setDisplayMessage("Failt to save file. Please try again");
+			er.setStatus(-1);
+			return er;
+		}
 	}
 
 	@RequestMapping(value = "/documentList", method = RequestMethod.GET)
-	public ModelAndView listAllDocuments(@RequestParam("userId") Integer userId, Model model) {
-		List<Document> documentInfo = documentService.listDocuments(userId);
-
-		return new ModelAndView("documentList", "documentInfo", documentInfo);
-
+	public @ResponseBody List<Document> listAllDocuments(HttpServletRequest request) {
+		HttpSession httpSession = request.getSession();
+		User user = (User) httpSession.getAttribute("user");
+		List<Document> documentInfo = documentService.listDocuments( user.getId() );
+		System.out.println( documentInfo.size() );
+		return documentInfo;
+		//return new ModelAndView("documentList", "documentInfo", documentInfo);
 	}
 
+	/*	
 	@RequestMapping(value = "/documentDetails", method = RequestMethod.GET)
 	public ModelAndView displayDocumentDetails(@RequestParam("id") Integer id, Model model) {
 		List<Document> documentDetails = documentService.listDocumentDetails(id);
-		/* model.addAttribute("msg", id); */
+		 model.addAttribute("msg", id); 
 		return new ModelAndView("documentDetails", "documentDetails", documentDetails);
+	}
+	*/
+	
+	@RequestMapping(value = "/download", method = RequestMethod.GET)
+	public @ResponseBody Response displayDocumentDetails(@RequestParam("id") Integer id, HttpServletRequest request, HttpServletResponse response) 
+	{
+		//List<Document> documentDetails = documentService.listDocumentDetails(id);
+		Document document = documentService.getDocumentContent( id );
+		try{
+			InputStream io = document.getContent().getBinaryStream();
+			if( io == null)
+			{
+				ErrorResponse errorresponse = new ErrorResponse();
+				errorresponse.setStatus(-1);
+				errorresponse.setDisplayMessage("Document not foumd");
+				return errorresponse;
+			}
+			byte [] buff = new byte[8291];
+			response.setContentType( document.getContentType() );      
+			response.setHeader("Content-Disposition", "attachment; filename="+document.getFilename()); 
+			ServletOutputStream outputStream = response.getOutputStream();
+			while( io.available() > 0 )
+			{
+				int n = io.read(buff);
+				outputStream.write(buff, 0, n);
+			}
+		}
+		catch (Exception e) {
+			
+		}
+		return null;
+		//return new ModelAndView("documentDetails", "documentDetails", documentDetails);
 
 	}
 }
