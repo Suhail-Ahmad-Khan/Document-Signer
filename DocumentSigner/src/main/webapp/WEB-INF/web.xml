@@ -20,10 +20,27 @@
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
 		<param-value>/WEB-INF/spring-servlet.xml</param-value>
-	</context-param>
-	
+	</context-param>	
 
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class> 
 	</listener>
+	
+	<filter>
+		<filter-name>authenticationFilter</filter-name>
+		<filter-class>org.bridgelabz.docsigner.filter.AuthenticationFilter</filter-class>
+	</filter>
+
+	<filter-mapping>
+		<filter-name>authenticationFilter</filter-name>
+		<url-pattern>/addDocuments</url-pattern>
+		<url-pattern>/documentDetails</url-pattern>
+		<url-pattern>/documentList</url-pattern>
+		<url-pattern>/success</url-pattern>
+		<url-pattern>/download</url-pattern>
+		<dispatcher>REQUEST</dispatcher>
+		<dispatcher>FORWARD</dispatcher>
+		<dispatcher>INCLUDE</dispatcher>
+	</filter-mapping>
+	
 </web-app>

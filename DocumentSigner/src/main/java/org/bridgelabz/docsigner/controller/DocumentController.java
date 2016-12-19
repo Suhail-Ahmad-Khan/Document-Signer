@@ -25,7 +25,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class DocumentController {
@@ -44,12 +43,13 @@ public class DocumentController {
 	public String documentPage() {
 		return "success";
 	}
-	
+
 	@RequestMapping(value = "/addDocuments", method = RequestMethod.POST)
-	public @ResponseBody Response  addDocument(@ModelAttribute("document") Document document, BindingResult result, MultipartFile file, HttpServletRequest request) {
+	public @ResponseBody Response addDocument(@ModelAttribute("document") Document document, BindingResult result,
+			MultipartFile file, HttpServletRequest request) {
 		HttpSession httpSession = request.getSession();
 		User user = (User) httpSession.getAttribute("user");
-		document.setUserId( user.getId() );
+		document.setUserId(user.getId());
 		InputStream io = null;
 		try {
 			document.setFilename(file.getOriginalFilename());
@@ -71,11 +71,10 @@ public class DocumentController {
 			 * io.close();
 			 */
 
-		}
-		catch (IOException e){
+		} catch (IOException e) {
 			e.printStackTrace();
 			ErrorResponse er = new ErrorResponse();
-			er.setErrorMessage("Error while saving the file" + e.getMessage() );
+			er.setErrorMessage("Error while saving the file" + e.getMessage());
 			er.setDisplayMessage("Failt to save file. Please try again");
 			er.setStatus(-1);
 			return er;
@@ -86,50 +85,50 @@ public class DocumentController {
 	public @ResponseBody List<Document> listAllDocuments(HttpServletRequest request) {
 		HttpSession httpSession = request.getSession();
 		User user = (User) httpSession.getAttribute("user");
-		List<Document> documentInfo = documentService.listDocuments( user.getId() );
-		System.out.println( documentInfo.size() );
+		List<Document> documentInfo = documentService.listDocuments(user.getId());
+		System.out.println(documentInfo.size());
 		return documentInfo;
-		//return new ModelAndView("documentList", "documentInfo", documentInfo);
+		// return new ModelAndView("documentList", "documentInfo",
+		// documentInfo);
 	}
 
-	/*	
-	@RequestMapping(value = "/documentDetails", method = RequestMethod.GET)
-	public ModelAndView displayDocumentDetails(@RequestParam("id") Integer id, Model model) {
-		List<Document> documentDetails = documentService.listDocumentDetails(id);
-		 model.addAttribute("msg", id); 
-		return new ModelAndView("documentDetails", "documentDetails", documentDetails);
-	}
-	*/
-	
+	/*
+	 * @RequestMapping(value = "/documentDetails", method = RequestMethod.GET)
+	 * public ModelAndView displayDocumentDetails(@RequestParam("id") Integer
+	 * id, Model model) { List<Document> documentDetails =
+	 * documentService.listDocumentDetails(id); model.addAttribute("msg", id);
+	 * return new ModelAndView("documentDetails", "documentDetails",
+	 * documentDetails); }
+	 */
+
 	@RequestMapping(value = "/download", method = RequestMethod.GET)
-	public @ResponseBody Response displayDocumentDetails(@RequestParam("id") Integer id, HttpServletRequest request, HttpServletResponse response) 
-	{
-		//List<Document> documentDetails = documentService.listDocumentDetails(id);
-		Document document = documentService.getDocumentContent( id );
-		try{
+	public @ResponseBody Response displayDocumentDetails(@RequestParam("id") Integer id, HttpServletRequest request,
+			HttpServletResponse response) {
+		// List<Document> documentDetails =
+		// documentService.listDocumentDetails(id);
+		Document document = documentService.getDocumentContent(id);
+		try {
 			InputStream io = document.getContent().getBinaryStream();
-			if( io == null)
-			{
+			if (io == null) {
 				ErrorResponse errorresponse = new ErrorResponse();
 				errorresponse.setStatus(-1);
-				errorresponse.setDisplayMessage("Document not foumd");
+				errorresponse.setDisplayMessage("Document not found");
 				return errorresponse;
 			}
-			byte [] buff = new byte[8291];
-			response.setContentType( document.getContentType() );      
-			response.setHeader("Content-Disposition", "attachment; filename="+document.getFilename()); 
+			byte[] buff = new byte[8291];
+			response.setContentType(document.getContentType());
+			response.setHeader("Content-Disposition", "attachment; filename=" + document.getFilename());
 			ServletOutputStream outputStream = response.getOutputStream();
-			while( io.available() > 0 )
-			{
+			while (io.available() > 0) {
 				int n = io.read(buff);
 				outputStream.write(buff, 0, n);
 			}
-		}
-		catch (Exception e) {
-			
+		} catch (Exception e) {
+
 		}
 		return null;
-		//return new ModelAndView("documentDetails", "documentDetails", documentDetails);
+		// return new ModelAndView("documentDetails", "documentDetails",
+		// documentDetails);
 
 	}
 }

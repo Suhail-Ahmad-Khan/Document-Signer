@@ -25,8 +25,7 @@ public class LoginController {
 	public String init(HttpServletRequest request) {
 		HttpSession httpSession = request.getSession();
 		User user = (User) httpSession.getAttribute("user");
-		if( user !=null)
-		{
+		if (user != null) {
 			return "success";
 		}
 		return "login";
@@ -42,26 +41,26 @@ public class LoginController {
 			er.setDisplayMessage("Invalid credentil");
 			er.setErrorMessage("user not found");
 			return er;
-			//return "login";
-		} 
-		else {
-			HttpSession sesion = request.getSession();
-			sesion.invalidate(); // invalidate existing session
-			sesion = request.getSession();
-			sesion.setAttribute("user", user);
+			// return "login";
+		} else {
+			HttpSession session = request.getSession();
+			session.invalidate(); // invalidate existing session
+			session = request.getSession();
+			session.setAttribute("user", user);
 			SuccessResponse er = new SuccessResponse();
 			er.setStatus(1);
-			er.setMessage("successfully logged");
+			er.setMessage("successfully logged in");
+			session.setMaxInactiveInterval(5);
 			return er;
-			//return "success";
+			// return "success";
 		}
 	}
 
 	@RequestMapping(value = "/signout", method = RequestMethod.GET)
 	public String signout(HttpServletRequest request) {
-		HttpSession sesion = request.getSession();
-		sesion.invalidate();
-		sesion = request.getSession();
+		HttpSession session = request.getSession();
+		session.invalidate();
+		session = request.getSession();
 		return "index";
 
 	}
