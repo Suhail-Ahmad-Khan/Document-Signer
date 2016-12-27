@@ -88,24 +88,12 @@ public class DocumentController {
 		List<Document> documentInfo = documentService.listDocuments(user.getId());
 		System.out.println(documentInfo.size());
 		return documentInfo;
-		// return new ModelAndView("documentList", "documentInfo",
-		// documentInfo);
 	}
-
-	/*
-	 * @RequestMapping(value = "/documentDetails", method = RequestMethod.GET)
-	 * public ModelAndView displayDocumentDetails(@RequestParam("id") Integer
-	 * id, Model model) { List<Document> documentDetails =
-	 * documentService.listDocumentDetails(id); model.addAttribute("msg", id);
-	 * return new ModelAndView("documentDetails", "documentDetails",
-	 * documentDetails); }
-	 */
 
 	@RequestMapping(value = "/download", method = RequestMethod.GET)
 	public @ResponseBody Response displayDocumentDetails(@RequestParam("id") Integer id, HttpServletRequest request,
 			HttpServletResponse response) {
-		// List<Document> documentDetails =
-		// documentService.listDocumentDetails(id);
+
 		Document document = documentService.getDocumentContent(id);
 		try {
 			InputStream io = document.getContent().getBinaryStream();
@@ -127,8 +115,6 @@ public class DocumentController {
 
 		}
 		return null;
-		// return new ModelAndView("documentDetails", "documentDetails",
-		// documentDetails);
 
 	}
 }
