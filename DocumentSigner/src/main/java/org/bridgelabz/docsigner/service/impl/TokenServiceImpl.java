@@ -1,5 +1,11 @@
 package org.bridgelabz.docsigner.service.impl;
 
+<<<<<<< HEAD
+=======
+import java.util.Date;
+import java.util.UUID;
+
+>>>>>>> 5441ace8e854ce57ebf0dbd119af7651224fc616
 import org.bridgelabz.docsigner.model.Token;
 import org.bridgelabz.docsigner.model.User;
 import org.bridgelabz.docsigner.service.TokenService;
@@ -19,6 +25,7 @@ public class TokenServiceImpl implements TokenService {
 	@Autowired
 	private SessionFactory sessionFactory;
 
+<<<<<<< HEAD
 	@SuppressWarnings("deprecation")
 	public Token authToken(String accessToken, String refreshToken) {
 		Session session = sessionFactory.getCurrentSession();
@@ -38,10 +45,20 @@ public class TokenServiceImpl implements TokenService {
 
 		try {
 			session.save(token);
+=======
+	public void addToken(Token token) {
+		Session session = sessionFactory.getCurrentSession();
+		// Transaction tr = ses.beginTransaction();
+		try {
+			token.setCreatedOn(new Date());
+			session.save(token);
+			// tr.commit();
+>>>>>>> 5441ace8e854ce57ebf0dbd119af7651224fc616
 		} catch (Exception e) {
 			// tr.rollback();
 			e.printStackTrace();
 		}
+<<<<<<< HEAD
 		return token;
 
 	}
@@ -53,6 +70,18 @@ public class TokenServiceImpl implements TokenService {
 			Criteria cr = session.createCriteria(Token.class);
 			Token token = (Token) cr.add(Restrictions.conjunction().add(Restrictions.eq("accessToken", accToken))
 					).uniqueResult();
+=======
+	}
+
+	@SuppressWarnings("deprecation")
+	public Token authToken(String accessToken, String refreshToken) {
+		Session session = sessionFactory.getCurrentSession();
+		// select * from users where userName = '' and password = '';
+		try {
+			Criteria cr = session.createCriteria(Token.class);
+			Token token = (Token) cr.add(Restrictions.conjunction().add(Restrictions.eq("accessToken", accessToken))
+					.add(Restrictions.eq("refreshToken", refreshToken))).uniqueResult();
+>>>>>>> 5441ace8e854ce57ebf0dbd119af7651224fc616
 			return token;
 		} catch (HibernateException e) {
 			e.printStackTrace();
@@ -60,6 +89,7 @@ public class TokenServiceImpl implements TokenService {
 		return null;
 	}
 
+<<<<<<< HEAD
 	@Override
 	public Token getTokenByRefToken(String refToken) {
 		Session session = sessionFactory.getCurrentSession();
@@ -73,4 +103,16 @@ public class TokenServiceImpl implements TokenService {
 		}
 		return null;
 	}
+=======
+	public Token generateToken(User user, Token token) {
+
+		String accessToken = UUID.randomUUID().toString().replaceAll("-", "");
+		String refreshToken = UUID.randomUUID().toString().replaceAll("-", "");
+		token.setAccessToken(accessToken);
+		token.setRefreshToken(refreshToken);
+		token.setUserId(user.getId());
+		return token;
+	}
+
+>>>>>>> 5441ace8e854ce57ebf0dbd119af7651224fc616
 }

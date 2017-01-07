@@ -12,13 +12,17 @@ import javax.servlet.http.HttpSession;
 import org.bridgelabz.docsigner.json.ErrorResponse;
 import org.bridgelabz.docsigner.json.Response;
 import org.bridgelabz.docsigner.json.SuccessResponse;
+<<<<<<< HEAD
 import org.bridgelabz.docsigner.json.TokenResponse;
+=======
+>>>>>>> 5441ace8e854ce57ebf0dbd119af7651224fc616
 import org.bridgelabz.docsigner.model.Token;
 import org.bridgelabz.docsigner.model.User;
 import org.bridgelabz.docsigner.service.TokenService;
 import org.bridgelabz.docsigner.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -48,8 +52,12 @@ public class LoginController {
 
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public @ResponseBody Response login(@RequestParam("email") String email, @RequestParam("password") String password,
+<<<<<<< HEAD
 			HttpServletRequest request, HttpServletResponse response) {
 		
+=======
+			HttpServletRequest request, @ModelAttribute("token") Token token) {
+>>>>>>> 5441ace8e854ce57ebf0dbd119af7651224fc616
 		User user = userService.authUser(email, password);
 		String accessToken = UUID.randomUUID().toString().replaceAll("-", "");
 		String refreshToken = UUID.randomUUID().toString().replaceAll("-", "");
@@ -62,6 +70,7 @@ public class LoginController {
 			return er;
 			// return "login";
 		} else {
+<<<<<<< HEAD
 			Token token = new Token();
 			token.setCreatedOn(new Date());
 			token.setAccessToken(accessToken);
@@ -75,11 +84,21 @@ public class LoginController {
 			HttpSession session = request.getSession();
 			/* session.invalidate(); */ // invalidate existing session
 			/* session = request.getSession(); */
+=======
+			
+			tokenService.generateToken(user, token);
+			tokenService.addToken(token);
+			
+			HttpSession session = request.getSession();
+			/*session.invalidate();*/ // invalidate existing session
+			/*session = request.getSession();*/
+>>>>>>> 5441ace8e854ce57ebf0dbd119af7651224fc616
 			session.setAttribute("user", user);
 			
 			SuccessResponse er = new SuccessResponse();
 			er.setStatus(1);
 			er.setMessage("successfully logged in");
+<<<<<<< HEAD
 			
 			TokenResponse tr = new TokenResponse();
 			tr.getAccessToken();
@@ -90,6 +109,10 @@ public class LoginController {
 			response.addCookie(ck);
 
 			return tr;
+=======
+			session.setMaxInactiveInterval(60);
+			return er;
+>>>>>>> 5441ace8e854ce57ebf0dbd119af7651224fc616
 			// return "success";
 		}
 	}

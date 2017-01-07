@@ -26,6 +26,7 @@ public class Token {
 	@Column(name = "accessToken")
 	private String accessToken;
 
+<<<<<<< HEAD
 	@Column(name = "accessTokenValidity")
 	private int accessTokenValidity;
 
@@ -35,6 +36,11 @@ public class Token {
 	@Column(name = "refreshTokenValidity")
 	private int refreshTokenValidity;
 
+=======
+	@Column(name = "refreshToken")
+	private String refreshToken;
+
+>>>>>>> 5441ace8e854ce57ebf0dbd119af7651224fc616
 	@Column(name = "createdOn")
 	private Date createdOn;
 
@@ -78,6 +84,7 @@ public class Token {
 		this.createdOn = createdOn;
 	}
 
+<<<<<<< HEAD
 	public int getAccessTokenValidity() {
 		return accessTokenValidity;
 	}
@@ -94,4 +101,6 @@ public class Token {
 		this.refreshTokenValidity = refreshTokenValidity;
 	}
 
+=======
+>>>>>>> 5441ace8e854ce57ebf0dbd119af7651224fc616
 }

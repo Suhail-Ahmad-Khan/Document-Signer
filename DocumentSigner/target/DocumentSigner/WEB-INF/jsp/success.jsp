@@ -8,6 +8,7 @@
 </head>
 <body background="${pageContext.request.contextPath}/images/green.jpg"
 	style="text-align: center; background-size: cover">
+<<<<<<< HEAD
 
 	<center>
 
@@ -19,5 +20,17 @@
 		<a href="download">Download</a>
 	</center>
 
+=======
+	
+	<center>
+	
+		<h1>Successful login</h1>
+		<a href="addDocuments">Add Documents</a> 
+		<a href="addSignature">Add Signature</a>
+		<a href="documentList">List My Documents</a>
+	
+	</center>
+	
+>>>>>>> 5441ace8e854ce57ebf0dbd119af7651224fc616
 </body>
 </html>
