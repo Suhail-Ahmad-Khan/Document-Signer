@@ -9,8 +9,7 @@
 
 	<mvc:annotation-driven />
 	<mvc:resources mapping="/images/**" location="/images/" />
-
-
+	<mvc:resources mapping="/js/**" location="/js/" />
 
 	<context:component-scan base-package="org.bridgelabz.docsigner.controller"></context:component-scan>
 	<context:component-scan base-package="org.bridgelabz.docsigner.service" />
@@ -21,6 +20,7 @@
 		<property name="prefix" value="/WEB-INF/jsp/"></property>
 		<property name="suffix" value=".jsp"></property>
 	</bean>
+
 	<bean id="messageSource"
 		class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
 		<property name="basename" value="resources/messages" />
@@ -31,7 +31,7 @@
 	<bean id="pooledDataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
 		destroy-method="close">
 		<property name="driverClass" value="com.mysql.jdbc.Driver" />
-		<property name="jdbcUrl" value="jdbc:mysql://localhost:3306/DocumentManager" />
+		<property name="jdbcUrl" value="jdbc:mysql://localhost:3306/DocuSigner" />
 		<property name="user" value="root" />
 		<property name="password" value="bridgeit" />
 		<property name="maxPoolSize" value="100" />
@@ -49,6 +49,9 @@
 				</value>
 				<value>
 					org.bridgelabz.docsigner.model.Document
+				</value>
+				<value>
+					org.bridgelabz.docsigner.model.Token
 				</value>
 			</list>
 		</property>

@@ -63,19 +63,12 @@ public class DocumentController {
 			sr.setMessage("Document added successfully!");
 			sr.setStatus(1);
 			return sr;
-			/*
-			 * FileOutputStream fos = new
-			 * FileOutputStream("/home/bridgeit/"+file.getOriginalFilename());
-			 * byte [] buff = new byte[8000]; while( io.available() > 0 ) { int
-			 * n = io.read(buff); fos.write(buff, 0, n); } fos.close();
-			 * io.close();
-			 */
 
 		} catch (IOException e) {
 			e.printStackTrace();
 			ErrorResponse er = new ErrorResponse();
 			er.setErrorMessage("Error while saving the file" + e.getMessage());
-			er.setDisplayMessage("Failt to save file. Please try again");
+			er.setDisplayMessage("Failed to save file. Please try again");
 			er.setStatus(-1);
 			return er;
 		}
@@ -88,24 +81,12 @@ public class DocumentController {
 		List<Document> documentInfo = documentService.listDocuments(user.getId());
 		System.out.println(documentInfo.size());
 		return documentInfo;
-		// return new ModelAndView("documentList", "documentInfo",
-		// documentInfo);
 	}
-
-	/*
-	 * @RequestMapping(value = "/documentDetails", method = RequestMethod.GET)
-	 * public ModelAndView displayDocumentDetails(@RequestParam("id") Integer
-	 * id, Model model) { List<Document> documentDetails =
-	 * documentService.listDocumentDetails(id); model.addAttribute("msg", id);
-	 * return new ModelAndView("documentDetails", "documentDetails",
-	 * documentDetails); }
-	 */
 
 	@RequestMapping(value = "/download", method = RequestMethod.GET)
 	public @ResponseBody Response displayDocumentDetails(@RequestParam("id") Integer id, HttpServletRequest request,
 			HttpServletResponse response) {
-		// List<Document> documentDetails =
-		// documentService.listDocumentDetails(id);
+
 		Document document = documentService.getDocumentContent(id);
 		try {
 			InputStream io = document.getContent().getBinaryStream();
@@ -127,8 +108,15 @@ public class DocumentController {
 
 		}
 		return null;
-		// return new ModelAndView("documentDetails", "documentDetails",
-		// documentDetails);
 
 	}
 }
+
+
+/*
+ * FileOutputStream fos = new
+ * FileOutputStream("/home/bridgeit/"+file.getOriginalFilename());
+ * byte [] buff = new byte[8000]; while( io.available() > 0 ) { int
+ * n = io.read(buff); fos.write(buff, 0, n); } fos.close();
+ * io.close();
+ */

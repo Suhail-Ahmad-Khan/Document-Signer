@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-	xmlns:tx="http://www.springframework.org/schema/tx"
-	xmlns:mvc="http://www.springframework.org/schema/mvc" 
-	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:context="http://www.springframework.org/schema/context"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
        http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
@@ -22,6 +20,7 @@
 		<property name="prefix" value="/WEB-INF/jsp/"></property>
 		<property name="suffix" value=".jsp"></property>
 	</bean>
+
 	<bean id="messageSource"
 		class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
 		<property name="basename" value="resources/messages" />
@@ -32,7 +31,7 @@
 	<bean id="pooledDataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
 		destroy-method="close">
 		<property name="driverClass" value="com.mysql.jdbc.Driver" />
-		<property name="jdbcUrl" value="jdbc:mysql://localhost:3306/DocumentManager" />
+		<property name="jdbcUrl" value="jdbc:mysql://localhost:3306/DocuSigner" />
 		<property name="user" value="root" />
 		<property name="password" value="bridgeit" />
 		<property name="maxPoolSize" value="100" />
@@ -51,6 +50,9 @@
 				<value>
 					org.bridgelabz.docsigner.model.Document
 				</value>
+				<value>
+					org.bridgelabz.docsigner.model.Token
+				</value>
 			</list>
 		</property>
 
@@ -63,9 +65,9 @@
 		</property>
 	</bean>
 
+	<bean id="tokenService" class="org.bridgelabz.docsigner.service.impl.TokenServiceImpl"></bean>
 	<bean id="userService" class="org.bridgelabz.docsigner.service.impl.UserServiceImpl"></bean>
-	<bean id="documentService"
-		class="org.bridgelabz.docsigner.service.impl.DocumentServiceImpl"></bean>
+	<bean id="documentService" class="org.bridgelabz.docsigner.service.impl.DocumentServiceImpl"></bean>
 
 	<bean id="transactionManager"
 		class="org.springframework.orm.hibernate5.HibernateTransactionManager">

@@ -35,7 +35,6 @@ public class AuthenticationFilter implements Filter {
 			return;
 		}
 		arg2.doFilter(request, response);
-
 	}
 
 	@Override

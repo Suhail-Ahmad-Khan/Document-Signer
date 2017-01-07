@@ -4,14 +4,20 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
+<title>Successful Login Page</title>
 </head>
 <body background="${pageContext.request.contextPath}/images/green.jpg"
 	style="text-align: center; background-size: cover">
+
 	<center>
+
 		<h1>Successful login</h1>
-		<a href="addDocuments">Add Documents</a> <a href="addSignature">Add
-			Signature</a> <a href="documentList">List My Documents</a>
+		<a href="addDocuments">Add Documents</a> 
+		<a href="addSignature">Add Signature</a> 
+		<a href="documentList">List My Documents</a> 
+		<a href="signout">Signout</a>
+		<a href="download">Download</a>
 	</center>
+
 </body>
 </html>

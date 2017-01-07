@@ -39,6 +39,7 @@ public class DocumentServiceImpl implements DocumentService {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<Document> listDocuments(int userId) {
 		Session session = sessionFactory.getCurrentSession();
 		@SuppressWarnings("deprecation")
@@ -52,6 +53,7 @@ public class DocumentServiceImpl implements DocumentService {
 		return myDocuments;
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<Document> listDocumentDetails(int id) {
 		Session session = sessionFactory.getCurrentSession();
 		Query<Document> query = session.createQuery("from Document where id=:id");
